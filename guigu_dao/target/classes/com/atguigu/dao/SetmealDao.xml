@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.SetmealDao">
+
+    <insert id="add" parameterType="setmeal" useGeneratedKeys="true" keyProperty="id">
+        insert into t_setmeal(name,  code,  helpCode,  sex,  age,  price,  remark,  attention,  img)
+        values(#{name},    #{code},    #{helpCode},    #{sex},    #{age},    #{price},    #{remark},    #{attention},    #{img})
+    </insert>
+    
+    
+    <insert id="addSetmealAndTravelGrop" parameterType="map" >
+        insert into t_setmeal_travelgroup(setmeal_id,travelgroup_id) values(#{setmealId},#{travelgroupId})
+    </insert>
+
+    <select id="findPage" parameterType="string" resultType="setmeal">
+        select * from t_travelitem
+        <where>
+            <if test="value!=null and value.length>0">
+                code=#{value} or name like concat("%",#{value},"%") or helpCode=#{value}
+            </if>
+        </where>
+    </select>
+
+    <select id="getSetmeal" resultType="setmeal">
+        select * from t_setmeal
+    </select>
+    
+
+    <resultMap id="SetmealResultMap" type="setmeal">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="name" column="name"></result>
+        <result property="code" column="code"></result>
+        <result property="helpCode" column="helpCode"></result>
+        <result property="sex" column="sex"></result>
+        <result property="age" column="age"></result>
+        <result property="price" column="price"></result>
+        <result property="remark" column="remark"></result>
+        <result property="attention" column="attention"></result>
+        <result property="img" column="img"></result>
+        <!--关联集合属性：借助关联数据对应接口方法来帮我们进行数据封装-->
+        <collection property="travelGroups" column="id"
+                    select="com.atguigu.dao.TravelGroupDao.findTravelGroupById"></collection>
+    </resultMap>
+
+    <select id="findById" parameterType="integer" resultMap="SetmealResultMap">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <select id="getSetmealById" parameterType="integer" resultType="setmeal">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <select id="getSetmealReport" resultType="map">
+        SELECT s.name name,COUNT(o.id) value
+        FROM t_setmeal s,t_order o WHERE s.id = o.setmeal_id
+        GROUP BY s.name
+    </select>
+</mapper>

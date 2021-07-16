@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.AddressDao">
+    <select id="findAllMaps" resultType="address">
+        select * from t_address
+    </select>
+    
+    <select id="findPage" parameterType="string" resultType="Address">
+        select * from t_address
+        <where>
+            <if test="value!=null and value.length>0">
+                addressName like concat("%",#{addressName},"%")
+            </if>
+        </where>
+    </select>
+    
+    <insert id="add" parameterType="address">
+        insert into t_address(addressName,lng,lat) values(#{addressName},#{lng},#{lat})
+    </insert>
+    
+    <delete id="deleteById" parameterType="integer">
+        delete from t_address where id =#{id}
+    </delete>
+</mapper>

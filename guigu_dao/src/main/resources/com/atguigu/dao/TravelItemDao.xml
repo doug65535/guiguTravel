@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.TravelItemDao">
+    <insert id="add" parameterType="travelItem"><!--由于设置别名包，可以省略包名，直接写类名首字母小写-->
+        insert into t_travelitem(code,name,sex,age,price,type,remark,attention)
+        values(#{code}, #{name}, #{sex}, #{age}, #{price}, #{type}, #{remark}, #{attention})
+    </insert>
+
+    <!--
+    Page extends ArrayList
+    Page findPage(String queryString);
+    -->
+    <select id="findPage" parameterType="string" resultType="travelItem">
+        select * from t_travelitem
+        <where>
+            <if test="value!=null and value.length>0"><!--获取简单参数必须value或用@param("value")-->
+                code = #{value} or name like "%"#{value}"%"
+            </if>
+        </where>
+    </select>
+    
+    <delete id="delete" parameterType="integer" >
+        delete from t_travelitem where id =#{id}
+    </delete>
+    
+    <select id="getById" parameterType="integer" resultType="travelItem">
+        select * from t_travelitem where id=#{id}
+    </select>
+
+    <update id="edit" parameterType="travelItem" >
+        update t_travelitem
+        <set>
+            <if test="code!=null and code.length>0">
+                code=#{code},
+            </if>
+            <if test="name!=null and name.length>0">
+                name=#{name},
+            </if>
+            <if test="sex!=null and sex.length>0">
+                sex=#{sex},
+            </if>
+            <if test="age!=null and age.length>0">
+                age=#{age},
+            </if>
+            <if test="price!=null">
+                price=#{price},
+            </if>
+            <if test="type!=null and type.length>0">
+                type=#{type},
+            </if>
+            <if test="remark!=null and remark.length>0">
+                remark=#{remark},
+            </if>
+            <if test="attention!=null and attention.length>0">
+                attention=#{attention},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findAll" resultType="travelItem">
+        select * from t_travelitem
+    </select>
+
+    <select id="findCountByTravelitemId" parameterType="integer" resultType="long">
+       SELECT COUNT(*) FROM t_travelgroup_travelitem WHERE travelitem_id=#{id}
+    </select>
+    
+    
+    <select id="findTravelItemById" parameterType="integer" resultType="travelItem">
+        SELECT t_travelitem.* FROM t_travelitem
+        WHERE id IN (SELECT travelitem_id FROM t_travelgroup_travelitem WHERE travelgroup_id=#{id} )
+    </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="guigu_service" />
+        <module name="quartz_demo" />
+        <module name="guigu_jobs" />
+        <module name="guigu_interface" />
+        <module name="guigu_pojo" />
+        <module name="guigu_mobile_web" />
+        <module name="guigu_dao" />
+        <module name="guigu_common" />
+        <module name="guigu_web" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
